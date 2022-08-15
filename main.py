@@ -1,45 +1,77 @@
-print("""Hi buddy
-write hint to know this program""")
-tasks=[]
-person=[]
+import database as db
+import os
+
+def clear():
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+def hint():
+    print("Available Commands: ")
+    print("""
+add -------------- To add task
+remove ----------- To remove task
+tasks ------------ To see availble task
+exit ------------- To exit task manager
+""")
+    print("Enter your command: ")
+
+clear()
+print("Hi buddy")
+hint()
+
 while True:
     msg=input()
     
-    if msg=="exit" : break
+    if msg=="exit": 
+        clear()
+        break
 
-    if msg=="hint" :
-        print("add : To add task\n" +
-        "remove : To remove task\n" +
-        "tasks : To see availble task\n" +
-        "exit : Exit")
+    elif msg=="add" :
+        clear()
+        print("Name: ")
+        person = input()
+        print("Task:")
+        task = input()
+        db.insert_task(person, task)
+        clear()
+        print("Task added successfully")
+        hint()
 
-    if msg=="add" :
-        print("Name :")
-        person.append(input())
-        print("her/his task :")
-        tasks.append(input())
+    elif msg=="remove" :
+        clear()
 
-    if msg=="remove" :
-        if len(person)==0 :
-            print("There aren't any tasks")
-        else :
-            print("name :")
-            p=input()
-            i=0
-            Len=len(person)
-            while(i< len(person)) :
-                if person[i]==p :
-                    del person[i]
-                    del tasks[i]
-                    break
-                i +=1
-            if i== Len :
-                print("We don't have this person")        
+        print("Name:")
+        person = input()
 
-    if msg=="tasks" :
-        j=0
-        while(j< len(person)) :
-            print( person[j] + " : " + tasks[j] )   
-            j +=1 
-        if len(person)==0 :
-            print("There aren't any tasks")         
+        db_tasks= db.get_person_tasks(person)
+
+        if len(db_tasks)==0:
+            print("No task found")
+        else:
+            print('Tasks:')
+            for task in db_tasks:
+                print(task[0] + ' -> ' + task[1])
+
+            print("Do you want to remove all tasks for " + person + "? (y/n)")
+            if input()=="y":
+                db.remove_task(person)
+                clear()
+                print("All tasks removed")
+        hint()
+
+    elif msg=="tasks" :
+        clear()
+        db_tasks = db.get_all_tasks()[::-1]
+        if len(db_tasks)==0 :
+            print("There is no task")
+        else:
+            print("Tasks:\n")
+            for task in db_tasks:
+                print(task[0] + " -> " + task[1])
+            print()
+        hint()
+    
+    else:
+        clear()
+        print("Invalid command")
+        hint()
+        
