@@ -8,7 +8,7 @@
 You can access different sections from here:
 
 - [Description](#description)
-- [Contibuters Info](#contibuters-info)
+- [Contributers Info](#contibuters-info)
 
 ---
 
