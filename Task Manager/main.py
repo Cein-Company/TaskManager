@@ -22,7 +22,7 @@ exit ------------- To exit task manager
     print("Enter your command: ")
 
 clear()
-print("Hi three, welcome to Task Manager")
+print("Hi there, welcome to Task Manager")
 hint()
 
 while True:
