@@ -16,14 +16,14 @@ def search_name(person):
     s = ""
     for task in session.query(Task).order_by(Task.id).filter(Task.name == person):
         s += task.name
-    if s == "":
+    if s == "" :
         return "false"   
   
 def search_id(id):
     s = ""
     for task in session.query(Task).order_by(Task.id).filter(Task.id == id):
         s += str(task.id)
-    if s == "":
+    if s == "" :
         return "false"  
             
 def insert_task(person, start, finish, task, password, sections, status, membership):
