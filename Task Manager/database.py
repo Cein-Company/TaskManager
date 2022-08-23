@@ -26,8 +26,8 @@ def search_id(id):
     if s == "" :
         return "false"  
             
-def insert_task(person, start, finish, task, password, sections):
-    task1 = Task(person, task, start, finish, password, sections)
+def insert_task(person, start, finish, task, password, sections, status, membership):
+    task1 = Task(person, task, start, finish, password, sections, status, membership)
     session.add(task1)
     session.commit()
     
@@ -35,14 +35,14 @@ def insert_task(person, start, finish, task, password, sections):
 def get_all_tasks():
     s = ""
     for task in session.query(Task).order_by(Task.id):
-        s += (str(task.id) + " " + task.name + " " + task.task + " " + task.start + " " + task.finish + task.sections + "\n")    
+        s += (str(task.id) + " " + task.name + " " + task.task + " " + task.start + " " + task.finish + " " + task.sections + " " + task.status + " "+ task.membership + "\n")    
     clear()
     return s
 
 def get_person_tasks(person):
     s = ""
     for task in session.query(Task).filter(Task.name == person):
-        s += (str(task.id) + " " + task.name + " " + task.task + " " + task.start + " " + task.finish + task.sections + "\n")
+        s += (str(task.id) + " " + task.name + " " + task.task + " " + task.start + " " + task.finish + " " + task.sections + " " + task.status + "\n")
     clear()
     return s
 
@@ -86,3 +86,11 @@ def edit_password(person, new_password):
 def edit_sections(person, new_sections):
     session.query(Task).filter(Task.name == person).update({"sections": new_sections})
     session.commit()
+    
+def edit_status(person, new_status):
+    session.query(Task).filter(Task.name == person).update({"status": new_status})
+    session.commit()    
+
+def edit_membership(person, new_membership):
+    session.query(Task).filter(Task.name == person).update({"membership": new_membership})
+    session.commit()    

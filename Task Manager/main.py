@@ -1,5 +1,6 @@
 import database as db
 import plot as p
+import pie
 import os
 from datetime import datetime
 import time
@@ -16,7 +17,8 @@ remove ----------- To remove task
 edit ------------- To edit task
 person task ------ To see person's task
 tasks ------------ To see availble tasks
-plot ------------- To show plot
+plot ------------- To show table plot
+pie -------------- To show pie chart
 exit ------------- To exit task manager
 """)
     print("Enter your command: ")
@@ -41,7 +43,8 @@ while True:
             time.sleep(2)
             clear()
             print("How do you want to add task?(1/2)\n1. Add task for a person\n2. Add task for a team")
-            if input() == "1":
+            in1 = input()
+            if in1 == "1":
                 clear()
                 print("Enter person name: ")
                 person = input()
@@ -60,12 +63,15 @@ while True:
                 clear()
                 print("Enter number of sections: ")
                 n = int(input())
+                section_list = []
+                status_list = []
+                membership_list = []
                 for i in range(n):
                     clear()
-                    print("Enter section: ")
-                    sections[i][0] = input()
-                    sections[i][1] = person
-                    sections[i][2] = "Undone"
+                    print(f"Enter section {i+1}: ")
+                    section_list.append(input())
+                    membership_list.append(person)
+                    status_list.append("Undone")
 
                 if person == "":
                     print("Please enter name!")
@@ -78,12 +84,15 @@ while True:
                 elif datetime.strptime(start, '%Y/%m/%d').date() > datetime.strptime(finish, '%Y/%m/%d').date():
                     print("Start time can't be greater than finish time!")
                 else:
-                    db.insert_task(person, start, finish, task, password, sections)
+                    sections = '-'.join(map(str, section_list))
+                    status = '-'.join(map(str, status_list))
+                    membership = '-'.join(map(str, membership_list))
+                    db.insert_task(person, start, finish, task, password, sections, status, membership)
                     situation = False
                     clear()
                     print("Task added successfully.")
                     hint()
-            elif input() == "2":
+            elif in1 == "2":
                 clear()
                 print("Enter team name: ")
                 team = input()
@@ -102,13 +111,16 @@ while True:
                 clear()
                 print("Enter number of sections: ")
                 n = int(input())
+                section_list = []
+                status_list = []
+                membership_list = []
                 for i in range(n):
                     clear()
-                    print("Enter section: ")
-                    sections[i][0] = input()
+                    print(f"Enter section {i+1}: ")
+                    section_list.append(input())
                     print("Enter person name: ")
-                    sections[i][1] = input()
-                    sections[i][2] = "undone"
+                    membership_list.append(input())
+                    status_list.append("Undone")
 
                 if team == "":
                     print("Please enter team name!")
@@ -121,6 +133,9 @@ while True:
                 elif datetime.strptime(start, '%Y/%m/%d').date() > datetime.strptime(finish, '%Y/%m/%d').date():
                     print("Start time can't be greater than finish time!")
                 else:
+                    sections = '-'.join(map(str, section_list))
+                    status = '-'.join(map(str, status_list))
+                    membership = '-'.join(map(str, membership_list))
                     db.insert_task(team, start, finish, task, password, sections)
                     situation = False
                     clear()
@@ -176,50 +191,75 @@ while True:
             print("Invalid password!")    
         else:
             clear()
-            print("What do you want to edit?(1/2/3/4/5)\n1.Name\n2.Task\n3.Start time\n4.Finish time\n5.Sections")
-            if input() == "1":
+            print("What do you want to edit?(1/2/3/4/5/6/7)\n1.Name\n2.Task\n3.Start time\n4.Finish time\n5.Sections\n6.status\n7.membership")
+            in2 = input()
+            if in2 == "1":
                 clear()
                 print("Enter new name: ")
                 new_name = input()
                 db.edit_name(person, new_name)
                 clear()
                 print("Name changed successfully.")
-            elif input() == "2":
+            elif in2 == "2":
                 clear()
                 print("Enter new task: ")
                 new_task = input()
                 db.edit_task(person, new_task)
                 clear()
                 print("Task changed successfully.")    
-            elif input() == "3":
+            elif in2 == "3":
                 clear()
                 print("Enter new start time:(Standard format: Year/Month/Day) ")
                 new_start = input()
                 db.edit_start(person, new_start)
                 clear()
                 print("Start time changed successfully.")
-            elif input() == "4":
+            elif in2 == "4":
                 clear()
                 print("Enter new finish time:(Standard format: Year/Month/Day) ")
                 new_finish = input()
                 db.edit_finish(person, new_finish)
                 clear()
                 print("Finish time changed successfully.")
-            elif input() == "5":
+            elif in2 == "5":
                 clear()
                 print("Enter new number of sections: ")
                 n = int(input())
+                section_list = []
                 for i in range(n):
                     clear()
-                    print("Enter section: ")
-                    sections[i][0] = input()
-                    print("Enter person name: ")
-                    sections[i][1] = input()
-                    print("Enter status:(Done/Undone)")
-                    sections[i][2] = input()
-                db.edit_sections(person, sections)
+                    print(f"Enter section {i+1}: ")
+                    section_list.append(input())
+                new_sections = '-'.join(map(str, section_list))    
+                db.edit_sections(person, new_sections)
                 clear()
                 print("Sections changed successfully.")
+            elif in2 == "6":
+                clear()
+                print("Enter new number of status: ")
+                n = int(input())
+                status_list = []
+                for i in range(n):
+                    clear()
+                    print(f"Enter status {i+1}:(Done/Undone)")
+                    status_list.append(input())
+                new_status = '-'.join(map(str, status_list))    
+                db.edit_status(person, new_status)
+                clear()
+                print("Status changed successfully.")
+            elif in2 == "7":
+                clear()
+                print("Enter new number of membership: ")
+                n = int(input())
+                membership_list = []
+                for i in range(n):
+                    clear()
+                    print(f"Enter person name {i+1}: ")
+                    membership_list.append(input())
+                new_membership = '-'.join(map(str, membership_list))    
+                db.edit_membership(person, new_membership)
+                clear()
+                print("Membership changed successfully.")        
             else:
                 print("Invalid command!")   
             hint()        
@@ -261,13 +301,14 @@ while True:
         
         clear()
         print("How do you want to see plot?(1/2)\n1.All people\n2.Specific person")
-        if input() == "1":
+        in3 = input()
+        if in3 == "1":
             clear()
             if len(db.get_all_tasks()) == 0:
                 print("No task found!")
             else:
                 p.plot_show()
-        else:
+        elif in3 == "2":
             clear()
             print("Name: ")
             person = input()
@@ -279,8 +320,38 @@ while True:
                 print("Nobody found!")
             else:
                 clear()
-                p.plot_show1(person)          
+                p.plot_show1(person) 
+        else:
+                print("Invalid command!")                    
         hint()
+        
+    elif msg == "pie" :
+        
+        clear()
+        print("How do you want to see pie chart?(1/2)\n1.All people\n2.Specific person")
+        in4 = input()
+        if in4 == "1":
+            clear()
+            if len(db.get_all_tasks()) == 0:
+                print("No task found!")
+            else:
+                pie.pie_show()
+        elif in4 == "2":
+            clear()
+            print("Name: ")
+            person = input()
+            if person == "":
+                clear()
+                print("Please enter name!")
+            elif db.search_name(person) == "false":
+                clear()
+                print("Nobody found!")
+            else:
+                clear()
+                pie.pie_show1(person)          
+        else:
+                print("Invalid command!")   
+        hint()    
              
     else:
         clear()
