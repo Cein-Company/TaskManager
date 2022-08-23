@@ -1,6 +1,8 @@
 import database as db
 import plot as p
 import os
+from datetime import datetime
+import time
 
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -32,24 +34,37 @@ while True:
         break
 
     elif msg == "add" :
-        
-        clear()
-        print("Name: ")
-        person = input()
-        print("Task: ")
-        task = input()
-        print("Start Time:(Standard format: Year/Month/Day) ")
-        start = input()
-                 
-        print("Finish Time:(Standard format: Year/Month/Day) ")
-        finish = input()
-    
-        db.insert_task(person, start, finish, task)
-        
-        clear()
-        print("Task added successfully")
-        hint()
-        
+
+        situation = True
+        while situation:
+            time.sleep(2)
+            clear()
+            print("Enter person name: ")
+            person = input()
+            print("Enter task: ")
+            task = input()
+            print("Enter start date:(Standard format: Year/Month/Day) ")
+            start = input()
+            print("Enter finish date:(Standard format: Year/Month/Day) ")
+            finish = input()
+
+            if person == "":
+                print("Please enter name!")
+            elif task == "":
+                print("Please enter task!")
+            elif start == "":
+                print("Please enter start time!")
+            elif finish == "":
+                print("Please enter finish time")
+            elif datetime.strptime(start, '%Y/%m/%d').date() > datetime.strptime(finish, '%Y/%m/%d').date():
+                print("Start time can't be greater than finish time!")
+            else:
+                db.insert_task(person, start, finish, task)
+                situation = False
+                clear()
+                print("Task added successfully.")
+                hint()  
+       
     elif msg == "remove" :
         
         clear()
@@ -59,7 +74,7 @@ while True:
         db_tasks = db.get_person_tasks(person)
 
         if len(db_tasks) == 0:
-            print("No task found")
+            print("No task found!")
         else:
             print(db.get_person_tasks(person))
             
@@ -67,33 +82,41 @@ while True:
         if input() == "1":
             db.remove_all_tasks(person)
             clear()
-            print("All tasks removed")
+            print("All tasks removed.")
         else:
             print("Enter task id: ")
             id = input()
             db.remove_task(id)
             clear()
-            print("Task removed")    
+            print("Task removed.")    
         hint()
      
     elif msg == "tasks" :
         
         clear()
-        print(db.get_all_tasks())
+        if len(db.get_all_tasks()) == 0:
+            print("No task found!")
+        else:
+            print(db.get_all_tasks())
         hint()
         
     elif msg == "person task" :
-        
+
         clear()
-        print("Name: ")
+        print("Enter person name: ")
         person = input()
-        db_tasks = db.get_person_tasks(person)
-        clear()
-        if len(db_tasks) == 0:
-            print("No task found")
-            
+        if person == "":
+            clear()
+            print("Please enter name!")
+        elif db.search_name(person) == "false":
+            clear()
+            print("Nobody found!")
+        elif len(db.get_person_tasks(person)) == 0:
+            clear()
+            print("No task found!")    
         else:
-            print(db_tasks)
+            clear()
+            print(db.get_person_tasks(person))
         hint()
             
     elif msg == "plot" :
@@ -102,16 +125,27 @@ while True:
         print("How do you want to see plot?(1/2)\n1.All people\n2.Specific person")
         if input() == "1":
             clear()
-            p.plot_show()
+            if len(db.get_all_tasks()) == 0:
+                print("No task found!")
+            else:
+                p.plot_show()
         else:
             clear()
             print("Name: ")
             person = input()
-            p.plot_show1(person)    
+            if person == "":
+                clear()
+                print("Please enter name!")
+            elif db.search_name(person) == "false":
+                clear()
+                print("Nobody found!")
+            else:
+                clear()
+                p.plot_show1(person)          
         hint()
              
     else:
         clear()
-        print("Invalid command")
+        print("Invalid command!")
         hint()
                 
