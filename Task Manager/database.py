@@ -26,8 +26,8 @@ def search_id(id):
     if s == "":
         return "false"  
             
-def insert_task(person, start, finish, task):
-    task1 = Task(person, task, start, finish)
+def insert_task(person, start, finish, task, password, sections, status, membership):
+    task1 = Task(person, task, start, finish, password, sections, status, membership)
     session.add(task1)
     session.commit()
     
@@ -35,14 +35,14 @@ def insert_task(person, start, finish, task):
 def get_all_tasks():
     s = ""
     for task in session.query(Task).order_by(Task.id):
-        s += (str(task.id) + " " + task.name + " " + task.task + " " + task.start + " " + task.finish + "\n")    
+        s += (str(task.id) + " " + task.name + " " + task.task + " " + task.start + " " + task.finish + task.password + task.sections + task.status + task.membership + "\n")    
     clear()
     return s
 
 def get_person_tasks(person):
     s = ""
     for task in session.query(Task).filter(Task.name == person):
-        s += (str(task.id) + " " + task.name + " " + task.task + " " + task.start + " " + task.finish + "\n")
+        s += (str(task.id) + " " + task.name + " " + task.task + " " + task.start + " " + task.finish + task.password + task.sections + task.status + task.membership + "\n")
     clear()
     return s
 
