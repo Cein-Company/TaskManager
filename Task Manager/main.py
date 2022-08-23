@@ -48,99 +48,149 @@ while True:
                 clear()
                 print("Enter person name: ")
                 person = input()
+                if person == "":
+                    print("Please enter name!")
+                    hint()
                 clear()
                 print("Enter task: ")
                 task = input()
+                if task == "":
+                    print("Please enter task!")
+                    hint()
                 clear()
                 print("Enter password: ")
                 password = input()
+                if password == "":
+                    print("Please enter password!")
+                    hint()
                 clear()
                 print("Enter start date:(Standard format: Year/Month/Day) ")
                 start = input()
+                if start == "":
+                    print("Please enter start time!")
+                    hint()
+                s = start.split('/')
+                if (len(s[0]) != 4) or (len(s[1]) != 2) or (len(s[2]) != 2):
+                    print("Please enter correct date format") 
+                    hint()
                 clear()
                 print("Enter finish date:(Standard format: Year/Month/Day) ")
                 finish = input()
+                if finish == "":
+                    print("Please enter finish time")
+                    hint()
+                f = finish.split('/')  
+                if (len(f[0]) != 4) or (len(f[1]) != 2) or (len(f[2]) != 2):
+                    print("Please enter correct date format")   
+                    hint()   
+                elif datetime.strptime(start, '%Y/%m/%d').date() > datetime.strptime(finish, '%Y/%m/%d').date():
+                    print("Start time can't be greater than finish time!")
+                    hint()
                 clear()
                 print("Enter number of sections: ")
                 n = int(input())
+                if n == "" :
+                    print("Please enter number of sections")
+                    hint()
                 section_list = []
                 status_list = []
                 membership_list = []
                 for i in range(n):
                     clear()
                     print(f"Enter section {i+1}: ")
-                    section_list.append(input())
+                    sections = input()
+                    if sections == "":
+                        print("Please enter finish time")
+                        hint()
+                    section_list.append(sections)
                     membership_list.append(person)
                     status_list.append("Undone")
-
-                if person == "":
-                    print("Please enter name!")
-                elif task == "":
-                    print("Please enter task!")
-                elif start == "":
-                    print("Please enter start time!")
-                elif finish == "":
-                    print("Please enter finish time")
-                elif datetime.strptime(start, '%Y/%m/%d').date() > datetime.strptime(finish, '%Y/%m/%d').date():
-                    print("Start time can't be greater than finish time!")
-                else:
-                    sections = '-'.join(map(str, section_list))
-                    status = '-'.join(map(str, status_list))
-                    membership = '-'.join(map(str, membership_list))
-                    db.insert_task(person, start, finish, task, password, sections, status, membership)
-                    situation = False
-                    clear()
-                    print("Task added successfully.")
-                    hint()
+                    
+                sections = '-'.join(map(str, section_list))
+                status = '-'.join(map(str, status_list))
+                membership = '-'.join(map(str, membership_list))
+                db.insert_task(person, start, finish, task, password, sections, status, membership)
+                situation = False
+                clear()
+                print("Task added successfully.")
+                hint()
+                
             elif in1 == "2":
                 clear()
                 print("Enter team name: ")
                 team = input()
+                if person == "":
+                    print("Please enter team name!")
+                    hint()
                 clear()
                 print("Enter task: ")
                 task = input()
+                if task == "":
+                    print("Please enter task!")
+                    hint()
                 clear()
                 print("Enter password: ")
                 password = input()
+                if password == "":
+                    print("Please enter password!")
+                    hint()
                 clear()
                 print("Enter start date:(Standard format: Year/Month/Day) ")
                 start = input()
+                if start == "":
+                    print("Please enter start time!")
+                    hint()
+                s = start.split('/')
+                if (len(s[0]) != 4) or (len(s[1]) != 2) or (len(s[2]) != 2):
+                    print("Please enter correct date format") 
+                    hint()    
                 clear()
                 print("Enter finish date:(Standard format: Year/Month/Day) ")
                 finish = input()
+                if finish == "":
+                    print("Please enter finish time")
+                    hint()
+                f = finish.split('/')  
+                if (len(f[0]) != 4) or (len(f[1]) != 2) or (len(f[2]) != 2):
+                    print("Please enter correct date format")   
+                    hint()   
+                elif datetime.strptime(start, '%Y/%m/%d').date() > datetime.strptime(finish, '%Y/%m/%d').date():
+                    print("Start time can't be greater than finish time!")
+                    hint()
                 clear()
                 print("Enter number of sections: ")
                 n = int(input())
+                if n == "" :
+                    print("Please enter number of sections")
+                    hint()
                 section_list = []
                 status_list = []
                 membership_list = []
                 for i in range(n):
                     clear()
                     print(f"Enter section {i+1}: ")
-                    section_list.append(input())
+                    sections = input()
+                    if sections == "":
+                        print("Please enter section")
+                        hint()
+                    section_list.append(sections)
                     print("Enter person name: ")
-                    membership_list.append(input())
+                    membership = input()
+                    if membership == "":
+                        print("Please enter membership")
+                        hint()
+                    membership_list.append(membership)
                     status_list.append("Undone")
 
-                if team == "":
-                    print("Please enter team name!")
-                elif task == "":
-                    print("Please enter task!")
-                elif start == "":
-                    print("Please enter start time!")
-                elif finish == "":
-                    print("Please enter finish time")
-                elif datetime.strptime(start, '%Y/%m/%d').date() > datetime.strptime(finish, '%Y/%m/%d').date():
-                    print("Start time can't be greater than finish time!")
-                else:
-                    sections = '-'.join(map(str, section_list))
-                    status = '-'.join(map(str, status_list))
-                    membership = '-'.join(map(str, membership_list))
-                    db.insert_task(team, start, finish, task, password, sections)
-                    situation = False
-                    clear()
-                    print("Task added successfully.")
-                    hint()    
+                sections = '-'.join(map(str, section_list))
+                status = '-'.join(map(str, status_list))
+                membership = '-'.join(map(str, membership_list))
+                db.insert_task(team, start, finish, task, password, sections, status, membership)
+                situation = False
+                clear()
+                print("Task added successfully.")
+                hint() 
+                   
             else:
                 print("Invalid input")      
        
@@ -175,94 +225,137 @@ while True:
         clear()
         print("Name: ")
         person = input()
+        if person == "":
+            print("Please enter name!")
+            hint()
+        if len(db.get_person_tasks(person)) == 0:
+            clear()
+            print("No task found!") 
+            hint()    
         print("Password: ")
         password = input()
-        if person == "":
-            clear()
-            print("Please enter name!")
-        elif len(db.get_person_tasks(person)) == 0:
-            clear()
-            print("No task found!")    
-        elif password == "":
+        if password == "":
             clear()
             print("Please enter password!")
-        elif db.check_password(person, password) == False:
+            hint()
+        if db.check_password(person, password) == False:
             clear()
-            print("Invalid password!")    
+            print("Invalid password!") 
+            hint()   
+        clear()
+        print("What do you want to edit?(1/2/3/4/5/6/7)\n1.Name\n2.Task\n3.Start time\n4.Finish time\n5.Sections\n6.status\n7.membership")
+        in2 = input()
+        if in2 == "1":
+            clear()
+            print("Enter new name: ")
+            new_name = input()
+            if new_name == "":
+                    print("Please enter name!")
+                    hint()
+            db.edit_name(person, new_name)
+            clear()
+            print("Name changed successfully.")
+        elif in2 == "2":
+            clear()
+            print("Enter new task: ")
+            new_task = input()
+            if new_task == "":
+                    print("Please enter task!")
+                    hint()
+            db.edit_task(person, new_task)
+            clear()
+            print("Task changed successfully.")    
+        elif in2 == "3":
+            clear()
+            print("Enter new start time:(Standard format: Year/Month/Day) ")
+            new_start = input()
+            if new_start == "":
+                    print("Please enter start time!")
+                    hint()
+            s = new_start.split('/')
+            if (len(s[0]) != 4) or (len(s[1]) != 2) or (len(s[2]) != 2):
+                print("Please enter correct date format") 
+                hint()
+            db.edit_start(person, new_start)
+            clear()
+            print("Start time changed successfully.")
+        elif in2 == "4":
+            clear()
+            print("Enter new finish time:(Standard format: Year/Month/Day) ")
+            new_finish = input()
+            if new_finish == "":
+                    print("Please enter finish time")
+                    hint()
+            f = new_finish.split('/')  
+            if (len(f[0]) != 4) or (len(f[1]) != 2) or (len(f[2]) != 2):
+                    print("Please enter correct date format")   
+                    hint()   
+            elif datetime.strptime(new_start, '%Y/%m/%d').date() > datetime.strptime(new_finish, '%Y/%m/%d').date():
+                    print("Start time can't be greater than finish time!")
+                    hint()
+            db.edit_finish(person, new_finish)
+            clear()
+            print("Finish time changed successfully.")
+        elif in2 == "5":
+            clear()
+            print("Enter new number of sections: ")
+            n = int(input())
+            if n == "" :
+                print("Please enter number of sections")
+                hint()
+            section_list = []
+            for i in range(n):
+                clear()
+                print(f"Enter section {i+1}: ")
+                sections = input()
+                if sections == "":
+                    print("Please enter finish time")
+                    hint()
+                section_list.append(sections)
+            new_sections = '-'.join(map(str, section_list))    
+            db.edit_sections(person, new_sections)
+            clear()
+            print("Sections changed successfully.")
+        elif in2 == "6":
+            clear()
+            print("Enter new number of status: ")
+            n = int(input())
+            if n == "" :
+                    print("Please enter number of status")
+                    hint()
+            status_list = []
+            for i in range(n):
+                clear()
+                print(f"Enter status {i+1}:(done/undone)")
+                status = input()
+                if status == "":
+                    print("Please enter status")
+                    hint()
+                status_list.append(status)
+            new_status = '-'.join(map(str, status_list))    
+            db.edit_status(person, new_status)
+            clear()
+            print("Status changed successfully.")
+        elif in2 == "7":
+            clear()
+            print("Enter new number of membership: ")
+            n = int(input())
+            membership_list = []
+            for i in range(n):
+                clear()
+                print(f"Enter person name {i+1}: ")
+                membership = input()
+                if membership == "":
+                    print("Please enter membership")
+                    hint()
+                membership_list.append(membership)
+            new_membership = '-'.join(map(str, membership_list))    
+            db.edit_membership(person, new_membership)
+            clear()
+            print("Membership changed successfully.")        
         else:
-            clear()
-            print("What do you want to edit?(1/2/3/4/5/6/7)\n1.Name\n2.Task\n3.Start time\n4.Finish time\n5.Sections\n6.status\n7.membership")
-            in2 = input()
-            if in2 == "1":
-                clear()
-                print("Enter new name: ")
-                new_name = input()
-                db.edit_name(person, new_name)
-                clear()
-                print("Name changed successfully.")
-            elif in2 == "2":
-                clear()
-                print("Enter new task: ")
-                new_task = input()
-                db.edit_task(person, new_task)
-                clear()
-                print("Task changed successfully.")    
-            elif in2 == "3":
-                clear()
-                print("Enter new start time:(Standard format: Year/Month/Day) ")
-                new_start = input()
-                db.edit_start(person, new_start)
-                clear()
-                print("Start time changed successfully.")
-            elif in2 == "4":
-                clear()
-                print("Enter new finish time:(Standard format: Year/Month/Day) ")
-                new_finish = input()
-                db.edit_finish(person, new_finish)
-                clear()
-                print("Finish time changed successfully.")
-            elif in2 == "5":
-                clear()
-                print("Enter new number of sections: ")
-                n = int(input())
-                section_list = []
-                for i in range(n):
-                    clear()
-                    print(f"Enter section {i+1}: ")
-                    section_list.append(input())
-                new_sections = '-'.join(map(str, section_list))    
-                db.edit_sections(person, new_sections)
-                clear()
-                print("Sections changed successfully.")
-            elif in2 == "6":
-                clear()
-                print("Enter new number of status: ")
-                n = int(input())
-                status_list = []
-                for i in range(n):
-                    clear()
-                    print(f"Enter status {i+1}:(Done/Undone)")
-                    status_list.append(input())
-                new_status = '-'.join(map(str, status_list))    
-                db.edit_status(person, new_status)
-                clear()
-                print("Status changed successfully.")
-            elif in2 == "7":
-                clear()
-                print("Enter new number of membership: ")
-                n = int(input())
-                membership_list = []
-                for i in range(n):
-                    clear()
-                    print(f"Enter person name {i+1}: ")
-                    membership_list.append(input())
-                new_membership = '-'.join(map(str, membership_list))    
-                db.edit_membership(person, new_membership)
-                clear()
-                print("Membership changed successfully.")        
-            else:
-                print("Invalid command!")   
-            hint()        
+            print("Invalid command!")   
+        hint()        
 
     elif msg == "tasks" :
         
@@ -286,12 +379,14 @@ while True:
         elif db.search_name(person) == "false":
             clear()
             print("Nobody found!")
+            hint()
         elif len(db.get_person_tasks(person)) == 0:
             clear()
             print("No task found!")    
         elif db.check_password(person, password) == False:
             clear()
             print("Invalid password!")
+            hint()
         else:
             clear()
             print(db.get_person_tasks(person))
