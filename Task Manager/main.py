@@ -15,8 +15,8 @@ def hint():
 add -------------- To add task
 remove ----------- To remove task
 edit ------------- To edit task
-person task ------ To see person's task
-tasks ------------ To see availble tasks
+one task --------- To see a single task
+all tasks -------- To see all tasks
 plot ------------- To show table plot
 pie -------------- To show pie chart
 exit ------------- To exit task manager
@@ -71,7 +71,7 @@ while True:
                     print(f"Enter section {i+1}: ")
                     section_list.append(input())
                     membership_list.append(person)
-                    status_list.append("Undone")
+                    status_list.append("undone")
 
                 if person == "":
                     print("Please enter name!")
@@ -120,7 +120,7 @@ while True:
                     section_list.append(input())
                     print("Enter person name: ")
                     membership_list.append(input())
-                    status_list.append("Undone")
+                    status_list.append("undone")
 
                 if team == "":
                     print("Please enter team name!")
@@ -136,7 +136,7 @@ while True:
                     sections = '-'.join(map(str, section_list))
                     status = '-'.join(map(str, status_list))
                     membership = '-'.join(map(str, membership_list))
-                    db.insert_task(team, start, finish, task, password, sections)
+                    db.insert_task(team, start, finish, task, password, sections, status, membership)
                     situation = False
                     clear()
                     print("Task added successfully.")
@@ -147,7 +147,7 @@ while True:
     elif msg == "remove" :
         
         clear()
-        print("Name: ")
+        print("Enter name: ")
         person = input()
 
         db_tasks = db.get_person_tasks(person)
@@ -156,24 +156,23 @@ while True:
             print("No task found!")
         else:
             print(db.get_person_tasks(person))
-            
-        print("How do you want to remove?(1/2)\n1.All tasks\n2.Specific task")
-        if input() == "1":
-            db.remove_all_tasks(person)
-            clear()
-            print("All tasks removed.")
-        else:
-            print("Enter task id: ")
-            id = input()
-            db.remove_task(id)
-            clear()
-            print("Task removed.")    
+            print("How do you want to remove?(1/2)\n1.All tasks\n2.Specific task")
+            if input() == "1":
+                db.remove_all_tasks(person)
+                clear()
+                print("All tasks removed.")
+            else:
+                print("Enter task id: ")
+                id = input()
+                db.remove_task(id)
+                clear()
+                print("Task removed.")    
         hint()
 
     elif msg == "edit" :
 
         clear()
-        print("Name: ")
+        print("Enter name: ")
         person = input()
         print("Password: ")
         password = input()
@@ -191,7 +190,7 @@ while True:
             print("Invalid password!")    
         else:
             clear()
-            print("What do you want to edit?(1/2/3/4/5/6/7)\n1.Name\n2.Task\n3.Start time\n4.Finish time\n5.Sections\n6.status\n7.membership")
+            print("What do you want to edit?(1/2/3/4/5/6/7)\n1.Name\n2.Task\n3.Start time\n4.Finish time\n5.Sections\n6.Status\n7.Membership")
             in2 = input()
             if in2 == "1":
                 clear()
@@ -223,10 +222,9 @@ while True:
                 print("Finish time changed successfully.")
             elif in2 == "5":
                 clear()
-                print("Enter new number of sections: ")
-                n = int(input())
+                len_sections = len(db.get_sections(person).split('-'))
                 section_list = []
-                for i in range(n):
+                for i in range(len_sections):
                     clear()
                     print(f"Enter section {i+1}: ")
                     section_list.append(input())
@@ -236,12 +234,11 @@ while True:
                 print("Sections changed successfully.")
             elif in2 == "6":
                 clear()
-                print("Enter new number of status: ")
-                n = int(input())
+                len_status = len(db.get_status(person).split('-'))
                 status_list = []
-                for i in range(n):
+                for i in range(len_status):
                     clear()
-                    print(f"Enter status {i+1}:(Done/Undone)")
+                    print(f"Enter status {i+1}:(done/undone)")
                     status_list.append(input())
                 new_status = '-'.join(map(str, status_list))    
                 db.edit_status(person, new_status)
@@ -249,10 +246,9 @@ while True:
                 print("Status changed successfully.")
             elif in2 == "7":
                 clear()
-                print("Enter new number of membership: ")
-                n = int(input())
+                len_membership = len(db.get_membership(person).split('-'))
                 membership_list = []
-                for i in range(n):
+                for i in range(len_membership):
                     clear()
                     print(f"Enter person name {i+1}: ")
                     membership_list.append(input())
@@ -261,10 +257,11 @@ while True:
                 clear()
                 print("Membership changed successfully.")        
             else:
+                clear()
                 print("Invalid command!")   
-            hint()        
+        hint()        
 
-    elif msg == "tasks" :
+    elif msg == "all tasks" :
         
         clear()
         if len(db.get_all_tasks()) == 0:
@@ -273,13 +270,11 @@ while True:
             print(db.get_all_tasks())
         hint()
         
-    elif msg == "person task" :
+    elif msg == "one task" :
 
         clear()
-        print("Enter person name: ")
+        print("Enter name: ")
         person = input()
-        print("Enter password: ")
-        password = input()
         if person == "":
             clear()
             print("Please enter name!")
@@ -289,9 +284,6 @@ while True:
         elif len(db.get_person_tasks(person)) == 0:
             clear()
             print("No task found!")    
-        elif db.check_password(person, password) == False:
-            clear()
-            print("Invalid password!")
         else:
             clear()
             print(db.get_person_tasks(person))
@@ -300,7 +292,7 @@ while True:
     elif msg == "plot" :
         
         clear()
-        print("How do you want to see plot?(1/2)\n1.All people\n2.Specific person")
+        print("How do you want to see plot?(1/2)\n1.All tasks\n2.One task")
         in3 = input()
         if in3 == "1":
             clear()
@@ -310,7 +302,7 @@ while True:
                 p.plot_show()
         elif in3 == "2":
             clear()
-            print("Name: ")
+            print("Enter ame: ")
             person = input()
             if person == "":
                 clear()
@@ -322,35 +314,22 @@ while True:
                 clear()
                 p.plot_show1(person) 
         else:
-                print("Invalid command!")                    
+            print("Invalid command!")                    
         hint()
         
     elif msg == "pie" :
-        
+
         clear()
-        print("How do you want to see pie chart?(1/2)\n1.All people\n2.Specific person")
-        in4 = input()
-        if in4 == "1":
+        print("Enter name: ")
+        person = input()
+        if person == "":
             clear()
-            if len(db.get_all_tasks()) == 0:
-                print("No task found!")
-            else:
-                pie.pie_show()
-        elif in4 == "2":
+            print("Please enter name!")
+        elif db.search_name(person) == "false":
             clear()
-            print("Name: ")
-            person = input()
-            if person == "":
-                clear()
-                print("Please enter name!")
-            elif db.search_name(person) == "false":
-                clear()
-                print("Nobody found!")
-            else:
-                clear()
-                pie.pie_show1(person)          
+            print("Nobody found!")
         else:
-                print("Invalid command!")   
+            pie.pie_show(person)            
         hint()    
              
     else:
