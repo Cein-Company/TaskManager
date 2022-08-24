@@ -45,17 +45,19 @@ def get_person_tasks(person):
         s += (str(task.id) + " " + task.name + " " + task.task + " " + task.start + " " + task.finish + " " + task.sections + " " + task.status + "\n")
     clear()
     return s
-    
+
 def get_sections(person):
     s = ""
     for task in session.query(Task).filter(Task.name == person):
         s += task.sections
     return s
+
 def get_status(person):
     s = ""
     for task in session.query(Task).filter(Task.name == person):
         s += task.status
     return s
+    
 def get_membership(person):
     s = ""
     for task in session.query(Task).filter(Task.name == person):
