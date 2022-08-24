@@ -16,7 +16,7 @@ def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 def pie_show(person):
-    for task in session.query(Task).order_by(Task.id):
+    for task in session.query(Task).filter(Task.name == person):
         sections = task.sections
         section_list = sections.split('-')
         membership = task.membership
@@ -44,7 +44,7 @@ def pie_show(person):
     plt.show()             
     
 def pie_show1():
-    for task in session.query(Task).filter(Task.name == person):
+    for task in session.query(Task):
         sections = task.sections
         labels = sections.split('-')
         n = len(labels)

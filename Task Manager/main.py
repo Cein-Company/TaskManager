@@ -38,6 +38,15 @@ while True:
 
     elif msg == "add" :
 
+        #check date format 
+        def validate(date_text):
+            res = True
+            try:
+                res = bool(datetime.strptime(date_text, '%Y/%m/%d'))
+            except ValueError:
+                res = False
+            return res    
+                
         situation = True
         while situation:
             time.sleep(2)
@@ -77,12 +86,22 @@ while True:
                     print("Please enter start time!")
                     hint()
                     break
+                if validate(start) == False:
+                    clear()
+                    print("Incorrect data format, should be YYYY/MM/DD")
+                    hint()
+                    break
 
                 print("Enter finish date:(Standard format: Year/Month/Day) ")
                 finish = input()
                 if finish == "":
                     clear()
                     print("Please enter finish time")
+                    hint()
+                    break
+                if validate(finish) == False:
+                    clear()
+                    print("Incorrect data format, should be YYYY/MM/DD")
                     hint()
                     break
 
@@ -153,12 +172,22 @@ while True:
                     print("Please enter start time!")
                     hint()
                     break
+                if validate(start) == False:
+                    clear()
+                    print("Incorrect data format, should be YYYY/MM/DD")
+                    hint()
+                    break
 
                 print("Enter finish date:(Standard format: Year/Month/Day) ")
                 finish = input()
                 if finish == "":
                     clear()
                     print("Please enter finish time")
+                    hint()
+                    break
+                if validate(finish) == False:
+                    clear()
+                    print("Incorrect data format, should be YYYY/MM/DD")
                     hint()
                     break
  
@@ -254,6 +283,7 @@ while True:
         in2 = input()
         if in2 == "1":
             clear()
+            print(db.get_person_tasks(person))
             print("Enter new name: ")
             new_name = input()
             if new_name == "":
@@ -264,6 +294,7 @@ while True:
             print("Name changed successfully.")
         elif in2 == "2":
             clear()
+            print(db.get_person_tasks(person))
             print("Enter new task: ")
             new_task = input()
             if new_task == "":
@@ -274,21 +305,33 @@ while True:
             print("Task changed successfully.")    
         elif in2 == "3":
             clear()
+            print(db.get_person_tasks(person))
             print("Enter new start time:(Standard format: Year/Month/Day) ")
             new_start = input()
             if new_start == "":
                     print("Please enter start time!")
                     hint()
+            if validate(new_start) == False:
+                    clear()
+                    print("Incorrect data format, should be YYYY/MM/DD")
+                    hint()
+                    break        
             db.edit_start(person, new_start)
             clear()
             print("Start time changed successfully.")
         elif in2 == "4":
             clear()
+            print(db.get_person_tasks(person))
             print("Enter new finish time:(Standard format: Year/Month/Day) ")
             new_finish = input()
             if new_finish == "":
                     print("Please enter finish time")
                     hint()
+            if validate(new_finish) == False:
+                    clear()
+                    print("Incorrect data format, should be YYYY/MM/DD")
+                    hint()
+                    break        
             elif datetime.strptime(new_start, '%Y/%m/%d').date() > datetime.strptime(new_finish, '%Y/%m/%d').date():
                     print("Start time can't be greater than finish time!")
                     hint()
@@ -299,8 +342,9 @@ while True:
                 clear()
                 len_sections = len(db.get_sections(person).split('-'))
                 section_list = []
+                clear()
+                print(db.get_person_tasks(person))
                 for i in range(len_sections):
-                    clear()
                     print(f"Enter section {i+1}: ")
                     section_list.append(input())
                 new_sections = '-'.join(map(str, section_list))    
@@ -311,8 +355,9 @@ while True:
             clear()
             len_status = len(db.get_status(person).split('-'))
             status_list = []
+            clear()
+            print(db.get_person_tasks(person))
             for i in range(len_status):
-                clear()
                 print(f"Enter status {i+1}:(done/undone)")
                 status_list.append(input())
             new_status = '-'.join(map(str, status_list))    
@@ -323,8 +368,9 @@ while True:
             clear()
             len_membership = len(db.get_membership(person).split('-'))
             membership_list = []
+            clear()
+            print(db.get_person_tasks(person))
             for i in range(len_membership):
-                clear()
                 print(f"Enter person name {i+1}: ")
                 membership_list.append(input())
             new_membership = '-'.join(map(str, membership_list))    
@@ -377,7 +423,7 @@ while True:
                 p.plot_show()
         elif in3 == "2":
             clear()
-            print("Enter ame: ")
+            print("Enter name: ")
             person = input()
             if person == "":
                 clear()
